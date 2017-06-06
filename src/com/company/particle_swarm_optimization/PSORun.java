@@ -5,10 +5,12 @@ package com.company.particle_swarm_optimization;
  *
  * PSO - Particle Swarm Optimization
  */
-public class Main implements PSO_Constants{
+public class PSORun {
 
     public static void main(String[] args) {
+        PSO pso = new PSO();
 
-
+        pso.initializeSwarm();
+        pso.execute();
     }
 }

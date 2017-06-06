@@ -1,7 +1,5 @@
 package com.company.firefly_algorithm;
 
-import com.company.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,13 +9,9 @@ import java.util.Random;
  *
  * Find function max / min value with firefly algorithm in which function is treated as light intensity function is space
  */
-public class Main implements Firefly_Constants{
+public class FireflyRun implements Firefly_Constants{
 
     public static void main(String[] args) {
-
-        //YOU CAN CHANGE THIS
-        int howManyFireflies = 30, numberOfIteration = 20000;
-
 
         List<Firefly> fireflyList = new ArrayList();
         Random randGener = new Random();
@@ -25,7 +19,7 @@ public class Main implements Firefly_Constants{
         /**
          * Create new fireflies with random position
          */
-        for (int i = 0; i < howManyFireflies; i++){
+        for (int i = 0; i < FIREFLIES_COUNT; i++){
             double x = randGener.nextDouble() * 2;
             double y = randGener.nextDouble() * 2;
 
@@ -44,10 +38,10 @@ public class Main implements Firefly_Constants{
 
 
         /**
-         * Main computation
+         * PSORun computation
          */
         long startTime = System.nanoTime();
-        for (int y = 0; y < numberOfIteration; y++) {
+        for (int y = 0; y < ITERATIONS; y++) {
             /**
              * Compare whole combinations of fireflies.
              * Firefly with weaker light intensity jumps towards firefly with greater light intensity value
@@ -71,8 +65,8 @@ public class Main implements Firefly_Constants{
             System.out.printf("x:%.3f   y:%.3f   light intensity:%.3f\n", e.getX(), e.getY(), e.getLightIntensity());
         }
 
-        System.out.println("Execution time " + (stopTime - startTime) + " nanoseconds for " + howManyFireflies + " fireflies"
-        + " and " + numberOfIteration + " iterations.");
+        System.out.println("Execution time " + (stopTime - startTime) + " nanoseconds for " + FIREFLIES_COUNT + " fireflies"
+        + " and " + ITERATIONS + " iterations.");
     }
 
     private static Firefly updateFormula(Firefly firefly1, Firefly firefly2){

@@ -2,6 +2,7 @@ package com.company.particle_swarm_optimization;
 
 import com.company.Point;
 
+
 /**
  * Created by Krzysztof Pikóra on 06.06.17.
  */
@@ -10,21 +11,18 @@ public class Particle {
     private Point velocity;
     private double fitness;
 
+    public Particle(){
+        position = new Point(-1,-1);
+        velocity = new Point(-1,-1);
+        fitness = 0;
+    }
+
+
+
     public double getFitness(){
-        this.calculateFitness();
+        fitness = Functions.evaluate(position);
         return fitness;
     }
-
-    private void calculateFitness(){
-        double x = this.position.getX();
-        double y = this.position.getY();
-
-        //FUNCTION
-        fitness = Math.pow((2.8125 - x + x * Math.pow(y, 4)), 2) +
-                Math.pow((2.25 - x + x * Math.pow(y, 2)), 2) +
-                Math.pow((1.5 - x + x * y), 2);
-    }
-
 
     public Point getPosition(){
         return position;
@@ -33,7 +31,6 @@ public class Particle {
     public void setPosition(Point position) {
         this.position = position;
     }
-
 
     public Point getVelocity() {
         return velocity;

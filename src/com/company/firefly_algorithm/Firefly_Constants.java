@@ -5,4 +5,6 @@ package com.company.firefly_algorithm;
  */
 public interface Firefly_Constants {
     double ALFA = 0.2, BETA = 1.0, GAMMA = 0.5;
+
+    int FIREFLIES_COUNT = 30, ITERATIONS = 20000;
 }

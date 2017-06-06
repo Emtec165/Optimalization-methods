@@ -39,7 +39,7 @@ public class PSO implements PSO_Constants{
             double velY = VEL_LOW + generator.nextDouble() * (VEL_HIGH - VEL_LOW);
 
             p.setPosition(new Point(posX, posY));
-            p.setVelocity(new Point(velX, velY));
+            p.setVelocity(new Velocity(velX, velY));
             p.getFitness();
             swarm.add(p);
         }
@@ -96,7 +96,7 @@ public class PSO implements PSO_Constants{
                         (r1 * C1) * (pBestLocation.get(i).getY() - p.getPosition().getY()) +
                         (r2 * C2) * (sBestLocation.getY() - p.getPosition().getY());
 
-                Point vel = new Point(newVel);
+                Velocity vel = new Velocity(newVel);
                 p.setVelocity(vel);
 
 

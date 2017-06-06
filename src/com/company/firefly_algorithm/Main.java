@@ -1,5 +1,7 @@
 package com.company.firefly_algorithm;
 
+import com.company.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,8 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         //YOU CAN CHANGE THIS
-        int howManyFireflies = 10, numbersOfIteration = 20000;
-
+        int howManyFireflies = 30, numberOfIteration = 20000;
 
 
         List<Firefly> fireflyList = new ArrayList();
@@ -41,13 +42,14 @@ public class Main {
         for (Firefly e: fireflyList) {
             System.out.printf("x:%.3f   y:%.3f   light intensity:%.3f\n", e.getX(), e.getY(), e.getLightIntensity());
         }
-        System.out.println();
+        System.out.println("\nComputing...\n");
 
 
         /**
          * Main computation
          */
-        for (int y = 0; y < numbersOfIteration; y++) {
+        long startTime = System.nanoTime();
+        for (int y = 0; y < numberOfIteration; y++) {
             /**
              * Compare whole combinations of fireflies.
              * Firefly with weaker light intensity jumps towards firefly with greater light intensity value
@@ -65,23 +67,24 @@ public class Main {
                 }
             }
         }
+        long stopTime = System.nanoTime();
 
         for (Firefly e: fireflyList) {
             System.out.printf("x:%.3f   y:%.3f   light intensity:%.3f\n", e.getX(), e.getY(), e.getLightIntensity());
         }
+
+        System.out.println("Execution time " + (stopTime - startTime) + " nanoseconds for " + howManyFireflies + " fireflies"
+        + " and " + numberOfIteration + " iterations.");
     }
 
     private static Firefly updateFormula(Firefly firefly1, Firefly firefly2){
         Random random = new Random();
-        double randomValue = -0.5 + (0.5 - -0.5) * random.nextDouble();
-        double firefly1X = firefly1.getX();
-        double firefly1Y = firefly1.getY();
-        double firefly2X = firefly2.getX();
-        double firefly2Y = firefly2.getY();
-        double r = Math.sqrt(Math.pow(firefly1X - firefly2X, 2) + Math.pow(firefly1Y - firefly2Y, 2));
 
-        double updatedX = firefly1X + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2X - firefly1X) + alfa * randomValue;
-        double updatedY = firefly1Y + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2Y - firefly1Y) + alfa * randomValue;
+        double randomValue = -0.5 + (0.5 - -0.5) * random.nextDouble();
+        double r = Math.sqrt(Math.pow(firefly1.getX() - firefly2.getX(), 2) + Math.pow(firefly1.getY() - firefly2.getY(), 2));
+
+        double updatedX = firefly1.getX() + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2.getX() - firefly1.getX()) + alfa * randomValue;
+        double updatedY = firefly1.getY() + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2.getY() - firefly1.getY()) + alfa * randomValue;
 
         double lightIntensity = -Math.pow(1 - updatedX, 2) - 100 * Math.pow((updatedY - Math.pow(updatedX,2)), 2);
 

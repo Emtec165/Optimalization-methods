@@ -11,9 +11,7 @@ import java.util.Random;
  *
  * Find function max / min value with firefly algorithm in which function is treated as light intensity function is space
  */
-public class Main {
-
-    private static final double alfa = 0.2, beta = 1.0, gamma = 0.5;
+public class Main implements Firefly_Constants{
 
     public static void main(String[] args) {
 
@@ -83,8 +81,8 @@ public class Main {
         double randomValue = -0.5 + (0.5 - -0.5) * random.nextDouble();
         double r = Math.sqrt(Math.pow(firefly1.getX() - firefly2.getX(), 2) + Math.pow(firefly1.getY() - firefly2.getY(), 2));
 
-        double updatedX = firefly1.getX() + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2.getX() - firefly1.getX()) + alfa * randomValue;
-        double updatedY = firefly1.getY() + beta * Math.exp(-gamma * Math.pow(r, 2)) * (firefly2.getY() - firefly1.getY()) + alfa * randomValue;
+        double updatedX = firefly1.getX() + BETA * Math.exp(-GAMMA * Math.pow(r, 2)) * (firefly2.getX() - firefly1.getX()) + ALFA * randomValue;
+        double updatedY = firefly1.getY() + BETA * Math.exp(-GAMMA * Math.pow(r, 2)) * (firefly2.getY() - firefly1.getY()) + ALFA * randomValue;
 
         double lightIntensity = -Math.pow(1 - updatedX, 2) - 100 * Math.pow((updatedY - Math.pow(updatedX,2)), 2);
 

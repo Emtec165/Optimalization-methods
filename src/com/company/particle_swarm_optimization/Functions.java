@@ -8,10 +8,10 @@ import java.util.List;
  * Created by Krzysztof Pikóra on 07.06.17.
  */
 public class Functions {
-    public static final double LOC_X_LOW = 1;
-    public static final double LOC_X_HIGH = 4;
-    public static final double LOC_Y_LOW = -1;
-    public static final double LOC_Y_HIGH = 1;
+    public static final double LOC_X_LOW = -50;
+    public static final double LOC_X_HIGH = 50;
+    public static final double LOC_Y_LOW = -50;
+    public static final double LOC_Y_HIGH = 50;
     public static final double VEL_LOW = -1;
     public static final double VEL_HIGH = 1;
 
@@ -27,21 +27,26 @@ public class Functions {
                 Math.pow(2.25 - x + x * Math.pow(y, 2), 2) +
                 Math.pow(1.5 - x + x * y, 2);
 
+
+//        result = x*x + y*y;
+
+//        result = Math.pow(1 - x, 2) + 100 * Math.pow((y - Math.pow(x,2)), 2);
+
         return result;
     }
 
-
-    public static int getMinPos(double[] list) {
+    public static int getMinPos(List<Particle> list) {
         int pos = 0;
-        double minValue = list[0];
+        double minValue = list.get(0).getFitness();
 
-        for(int i=0; i<list.length; i++) {
-            if(list[i] < minValue) {
+        for(int i=0; i<list.size(); i++) {
+            double fitness = list.get(i).getFitness();
+            if(fitness < minValue) {
                 pos = i;
-                minValue = list[i];
+                minValue = fitness;
             }
         }
 
         return pos;
-    }
+}
 }

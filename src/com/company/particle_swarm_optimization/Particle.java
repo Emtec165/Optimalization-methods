@@ -20,8 +20,15 @@ public class Particle {
 
 
     public double getFitness(){
-        fitness = Functions.evaluate(position);
         return fitness;
+    }
+
+    public void calculateFitness(){
+        fitness = Functions.evaluate(position);
+    }
+
+    public void setFitness(double fitness){
+        this.fitness = fitness;
     }
 
     public Point getPosition(){

@@ -14,11 +14,8 @@ import static com.company.particle_swarm_optimization.Functions.*;
 public class PSO implements PSO_Constants{
     Random generator = new Random();
     private List<Particle> swarm = new ArrayList<>();
-    private double[] pBest = new double[SWARM_SIZE];    //particle best fitness value
-    private List<Point> pBestLocation = new ArrayList<>();  //at location
-    private Double sBest;    //swarm best
-    private Point sBestLocation;
-    private double[] fitnessValueList = new double[SWARM_SIZE];
+    private List<Particle> pBest = new ArrayList<>();   //particle's best fitness and location
+    private Particle sBest = new Particle();            //swarm best fitness and location
 
 
     public PSO(){
@@ -40,7 +37,7 @@ public class PSO implements PSO_Constants{
 
             p.setPosition(new Point(posX, posY));
             p.setVelocity(new Velocity(velX, velY));
-            p.getFitness();
+            p.calculateFitness();
             swarm.add(p);
         }
     }
@@ -50,8 +47,7 @@ public class PSO implements PSO_Constants{
 
         //set particle best fitness, location and swarm best particle
         for (int i = 0; i < SWARM_SIZE; i++){
-            pBest[i] = fitnessValueList[i];
-            pBestLocation.add(i, swarm.get(i).getPosition());
+            pBest.add(swarm.get(i));
         }
 
         int t = 0;
@@ -61,41 +57,21 @@ public class PSO implements PSO_Constants{
         while (t < ITERATIONS && err > ERR_TOLERANCE){
 
             //update pBest (particle best)
-            for (int i = 0; i < SWARM_SIZE; i++) {
-                if (pBest[i] > fitnessValueList[i]){
-                    pBest[i] = fitnessValueList[i];
-                    pBestLocation.set(i, swarm.get(i).getPosition());
-                }
-            }
+            update_pBest();
 
             //update sBest (swarm best)
-            int bestParticleIndex = Functions.getMinPos(fitnessValueList);
-            if(t == 0 || fitnessValueList[bestParticleIndex] < sBest) {
-                sBest = fitnessValueList[bestParticleIndex];
-                sBestLocation = swarm.get(bestParticleIndex).getPosition();
-            }
+            update_sBest(t);
 
             w = W_UP - (((double) t) / ITERATIONS) * (W_UP - W_LO);
 
             for (int i = 0; i < SWARM_SIZE; i++){
-                double r1 = generator.nextDouble();
-                double r2 = generator.nextDouble();
-
                 Particle p = swarm.get(i);
 
 
 
                 //update velocity
                 double[] newVel = new double[DIMENSIONS];
-
-                newVel[X] = (w * p.getVelocity().getX()) +
-                        (r1 * C1) * (pBestLocation.get(i).getX() - p.getPosition().getX()) +
-                        (r2 * C2) * (sBestLocation.getX() - p.getPosition().getX());
-
-                newVel[Y] = (w * p.getVelocity().getY()) +
-                        (r1 * C1) * (pBestLocation.get(i).getY() - p.getPosition().getY()) +
-                        (r2 * C2) * (sBestLocation.getY() - p.getPosition().getY());
-
+                updateVelocity(p, w, i, newVel);
                 Velocity vel = new Velocity(newVel);
                 p.setVelocity(vel);
 
@@ -108,33 +84,69 @@ public class PSO implements PSO_Constants{
                 p.setPosition(loc);
             }
 
-            err = Functions.evaluate(sBestLocation);
+            err = Functions.evaluate(sBest.getPosition());
 
             System.out.println("ITERATION " + t);
-            System.out.printf("x:%.3f   y:%.3f   fitness:%.3f err:%.3f\n",
-                    sBestLocation.getX(),
-                    sBestLocation.getY(),
-                    Functions.evaluate(sBestLocation),
-                    err);
-
+            printBestParticle();
 
             updateFitnessList();
             t++;
         }
 
 
-        // print best particle
-        System.out.printf("\nFound solution at iteration nr %d\nx:%.3f   y:%.3f   fitness:%.3f err:%.3f\n",
-                t,
-                sBestLocation.getX(),
-                sBestLocation.getY(),
-                Functions.evaluate(sBestLocation),
-                err);
+        // print solution
+        System.out.println("\nFound solution at iteration nr " + (t-1));
+        printBestParticle();
+
+        if (t == ITERATIONS){
+            System.out.println("\nProbably din't found solution...\nTry again.");
+        }
     }
 
     public void updateFitnessList(){
         for (int i = 0; i < SWARM_SIZE; i++){
-            fitnessValueList[i] = swarm.get(i).getFitness();
+            swarm.get(i).calculateFitness();
         }
+    }
+
+    //update pBest (particle best)
+    public void update_pBest(){
+        for (int i = 0; i < SWARM_SIZE; i++) {
+            Particle pBestTmp = pBest.get(i);
+            Particle particleFromSwarm = swarm.get(i);
+            if (pBestTmp.getFitness() > particleFromSwarm.getFitness()){
+                pBestTmp.setFitness(particleFromSwarm.getFitness());
+                pBestTmp.setPosition(particleFromSwarm.getPosition());
+            }
+        }
+    }
+
+    //update sBest (swarm best)
+    public void update_sBest(int t){
+        int bestParticleIndex = Functions.getMinPos(swarm);
+        if (t == 0 || swarm.get(bestParticleIndex).getFitness() < sBest.getFitness()){
+            sBest.setFitness(swarm.get(bestParticleIndex).getFitness());
+            sBest.setPosition(swarm.get(bestParticleIndex).getPosition());
+        }
+    }
+
+    public void updateVelocity(Particle p, double w, int i, double[] newVel){
+        double r1 = generator.nextDouble();
+        double r2 = generator.nextDouble();
+
+        newVel[X] = (w * p.getVelocity().getX()) +
+                (r1 * C1) * (pBest.get(i).getPosition().getX() - p.getPosition().getX()) +
+                (r2 * C2) * (sBest.getPosition().getX() - p.getPosition().getX());
+
+        newVel[Y] = (w * p.getVelocity().getY()) +
+                (r1 * C1) * (pBest.get(i).getPosition().getY() - p.getPosition().getY()) +
+                (r2 * C2) * (sBest.getPosition().getY() - p.getPosition().getY());
+    }
+
+    public void printBestParticle(){
+        System.out.printf("x:%.10f   y:%.10f   fitness:%.10f\n",
+                sBest.getPosition().getX(),
+                sBest.getPosition().getY(),
+                Functions.evaluate(sBest.getPosition()));
     }
 }

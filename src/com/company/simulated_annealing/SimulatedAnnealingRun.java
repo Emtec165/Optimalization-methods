@@ -6,6 +6,10 @@ package com.company.simulated_annealing;
 public class SimulatedAnnealingRun {
     public static void main(String[] args) {
         City city = new City();
+        System.out.println(city);
         System.out.println(city.distanceToCity(new City(2,5)));
+
+        TourManager.addCity(city);
+        System.out.println(TourManager.getCity(0));
     }
 }

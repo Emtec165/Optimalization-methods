@@ -16,6 +16,7 @@ public class Main {
 
         FireflyRun firefly = new FireflyRun();
         PSO pso = new PSO();
+        SimulatedAnnealingRun sa = new SimulatedAnnealingRun();
 
         while (algorithmToRun != 0) {
             System.out.println("\nChoose an algorithm to run:");
@@ -23,9 +24,9 @@ public class Main {
             System.out.println("1) Firefly algorithm.");
             System.out.println("11) Modify firefly algorithm variables.");
             System.out.println("2) Particle swarm optimization.");
-            System.out.println("22) Particle swarm optimization.");
-            System.out.println("3) Simulated annealing.");
-            System.out.println("33) Simulated annealing.");
+            System.out.println("22) Modify particle swarm optimization variables.");
+            System.out.println("3) Simulated annealing. (Problem komiwojażera; Solving traveling salesman problem).");
+            System.out.println("33) Modify simulated annealing variables.");
             System.out.println("9) Reset application.");
 
             try {
@@ -48,6 +49,7 @@ public class Main {
                         firefly.setITERATIONS(scanner.nextInt());
                     } catch (java.util.InputMismatchException e){
                         scanner.nextLine();
+                        System.out.println("Invalid input. Try again.");
                     }
                     break;
                 case 2:
@@ -62,16 +64,33 @@ public class Main {
                         pso.setITERATIONS(scanner.nextInt());
                     } catch (java.util.InputMismatchException e){
                         scanner.nextLine();
+                        System.out.println("Invalid input. Try again.");
                     }
                     break;
                 case 3:
-                    SimulatedAnnealingRun.run();
+                    sa.run();
                     break;
                 case 33:
+                    try {
+                        System.out.println("Set cities count (default 20):");
+                        sa.setHomManyCities(scanner.nextInt());
+                        System.out.println("Set initial temperature (default 1000):");
+                        sa.setTemp(scanner.nextDouble());
+                        System.out.println("Set cooling rate (default 0.003):");
+                        sa.setCoolingRate(scanner.nextDouble());
+                        System.out.println("Set city max x coordinate (default 200):");
+                        sa.setMaxXCoordinate(scanner.nextInt());
+                        System.out.println("Set city max y coordinate (default 200):");
+                        sa.setMaxYCoordinate(scanner.nextInt());
+                    } catch (java.util.InputMismatchException e){
+                        scanner.nextLine();
+                        System.out.println("Invalid input. Try again.");
+                    }
                     break;
                 case 9:
                     firefly = new FireflyRun();
                     pso = new PSO();
+                    sa = new SimulatedAnnealingRun();
                     break;
                 default:
                     System.out.println("Invalid input. Try again.");

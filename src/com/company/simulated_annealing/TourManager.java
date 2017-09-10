@@ -16,7 +16,6 @@ public class TourManager {
         return destinationCities.get(index);
     }
 
-
     public static int numberOfCities(){
         return destinationCities.size();
     }

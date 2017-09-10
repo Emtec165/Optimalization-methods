@@ -7,12 +7,12 @@ import java.util.Collections;
  */
 public class SimulatedAnnealingRun {
     public static void main(String[] args) {
-        int howManyCities = 20;
+        int howManyCities = 20, maxXCoordinate = 200, maxYCoordinate = 200;
         double temp = 1000;
         double coolingRate = 0.003;
 
         for (int i = 0; i < howManyCities; i++){
-            City city = new City((int)(Math.random()*200), (int)(Math.random()*200));
+            City city = new City((int)(Math.random()*maxXCoordinate), (int)(Math.random()*maxYCoordinate));
             TourManager.addCity(city);
         }
 

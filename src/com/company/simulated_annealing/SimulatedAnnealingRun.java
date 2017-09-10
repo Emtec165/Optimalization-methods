@@ -5,11 +5,30 @@ package com.company.simulated_annealing;
  */
 public class SimulatedAnnealingRun {
     public static void main(String[] args) {
-        City city = new City();
-        System.out.println(city);
-        System.out.println(city.distanceToCity(new City(2,5)));
+        int howManyCities = 20;
+        double temp = 1000;
+        double coolingRate = 0.003;
 
-        TourManager.addCity(city);
-        System.out.println(TourManager.getCity(0));
+        for (int i = 0; i < howManyCities; i++){
+            City city = new City((int)(Math.random()*200), (int)(Math.random()*200));
+            TourManager.addCity(city);
+        }
+
+        Tour currentSolution = new Tour();
+        currentSolution.generateIndividual();
+
+        Tour bestSolution = new Tour(currentSolution.getTour());
+
+        System.out.println(bestSolution);
+        System.out.println(bestSolution.getDistance());
+    }
+
+    public static  double acceptanceProbability(int energy, int newEnergy, double temperature){
+        if (newEnergy < energy){
+            return 1f;
+        }
+        else {
+            return Math.exp((energy - newEnergy) / temperature);
+        }
     }
 }

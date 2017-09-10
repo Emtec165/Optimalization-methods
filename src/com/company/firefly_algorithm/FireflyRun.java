@@ -10,8 +10,8 @@ import java.util.Random;
  * Find function max / min value with firefly algorithm in which function is treated as light intensity function is space
  */
 public class FireflyRun {
-    double ALFA = 0.2, BETA = 1.0, GAMMA = 0.5;
-    int FIREFLIES_COUNT = 30, ITERATIONS = 20000;
+    private double ALFA = 0.2, BETA = 1.0, GAMMA = 0.5;
+    private int FIREFLIES_COUNT = 30, ITERATIONS = 20000;
 
     public void setFIREFLIES_COUNT(int FIREFLIES_COUNT){
         this.FIREFLIES_COUNT = FIREFLIES_COUNT;

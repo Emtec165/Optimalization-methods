@@ -12,6 +12,9 @@ import static com.company.particle_swarm_optimization.Functions.*;
  * Created by Krzysztof Pikóra on 06.06.17.
  */
 public class PSO implements PSO_Constants{
+    private int ITERATIONS = 600;
+    private int SWARM_SIZE = 30;
+
     Random generator = new Random();
     private List<Particle> swarm = new ArrayList<>();
     private List<Particle> pBest = new ArrayList<>();   //particle's best fitness and location
@@ -22,8 +25,17 @@ public class PSO implements PSO_Constants{
 
     }
 
+    public void setITERATIONS(int ITERATIONS){
+        this.ITERATIONS = ITERATIONS;
+    }
+
+    public void setSWARM_SIZE(int SWARM_SIZE){
+        this.SWARM_SIZE = SWARM_SIZE;
+    }
+
 
     public void initializeSwarm(){
+        System.out.println("Computing...");
         Particle p;
 
         for (int i = 0; i < SWARM_SIZE; i++){
@@ -43,6 +55,7 @@ public class PSO implements PSO_Constants{
     }
 
     public void execute(){
+        long startTime = System.nanoTime();
         updateFitnessList();
 
         //set particle best fitness, location and swarm best particle
@@ -86,12 +99,13 @@ public class PSO implements PSO_Constants{
 
             err = Functions.evaluate(sBest.getPosition());
 
-            System.out.println("ITERATION " + t);
-            printBestParticle();
+//            System.out.println("ITERATION " + t);
+//            printBestParticle();
 
             updateFitnessList();
             t++;
         }
+        long stopTime = System.nanoTime();
 
 
         // print solution
@@ -101,6 +115,9 @@ public class PSO implements PSO_Constants{
         if (t == ITERATIONS){
             System.out.println("\nProbably din't found solution...\nTry again.");
         }
+
+        System.out.println("Execution time " + (stopTime - startTime) + " nanoseconds for " + SWARM_SIZE + " particles and " + ITERATIONS + " iterations.");
+        System.out.println("Please reset application before running PSO for the 2nd time.");
     }
 
     public void updateFitnessList(){

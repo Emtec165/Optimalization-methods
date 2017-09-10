@@ -9,9 +9,19 @@ import java.util.Random;
  *
  * Find function max / min value with firefly algorithm in which function is treated as light intensity function is space
  */
-public class FireflyRun implements Firefly_Constants{
+public class FireflyRun {
+    double ALFA = 0.2, BETA = 1.0, GAMMA = 0.5;
+    int FIREFLIES_COUNT = 30, ITERATIONS = 20000;
 
-    public static void main(String[] args) {
+    public void setFIREFLIES_COUNT(int FIREFLIES_COUNT){
+        this.FIREFLIES_COUNT = FIREFLIES_COUNT;
+    }
+
+    public void setITERATIONS(int ITERATIONS){
+        this.ITERATIONS = ITERATIONS;
+    }
+
+    public void run() {
 
         List<Firefly> fireflyList = new ArrayList();
         Random randGener = new Random();
@@ -31,9 +41,9 @@ public class FireflyRun implements Firefly_Constants{
         }
 
 
-        for (Firefly e: fireflyList) {
-            System.out.printf("x:%.3f   y:%.3f   light intensity:%.3f\n", e.getX(), e.getY(), e.getLightIntensity());
-        }
+//        for (Firefly e: fireflyList) {
+//            System.out.printf("x:%.3f   y:%.3f   light intensity:%.3f\n", e.getX(), e.getY(), e.getLightIntensity());
+//        }
         System.out.println("\nComputing...\n");
 
 
@@ -69,7 +79,7 @@ public class FireflyRun implements Firefly_Constants{
         + " and " + ITERATIONS + " iterations.");
     }
 
-    private static Firefly updateFormula(Firefly firefly1, Firefly firefly2){
+    private Firefly updateFormula(Firefly firefly1, Firefly firefly2){
         Random random = new Random();
 
         double randomValue = -0.5 + (0.5 - -0.5) * random.nextDouble();

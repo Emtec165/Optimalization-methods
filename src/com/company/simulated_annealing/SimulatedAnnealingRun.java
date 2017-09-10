@@ -6,7 +6,9 @@ import java.util.Collections;
  * Created by Krzysztof Pikóra on 10.09.17.
  */
 public class SimulatedAnnealingRun {
-    public static void main(String[] args) {
+
+    public static void run() {
+
         int howManyCities = 20, maxXCoordinate = 200, maxYCoordinate = 200;
         double temp = 1000;
         double coolingRate = 0.003;

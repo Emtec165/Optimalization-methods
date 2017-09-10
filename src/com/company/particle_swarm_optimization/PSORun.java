@@ -7,9 +7,8 @@ package com.company.particle_swarm_optimization;
  */
 public class PSORun {
 
-    public static void main(String[] args) {
+    public static void run() {
         PSO pso = new PSO();
-
         pso.initializeSwarm();
         pso.execute();
     }
